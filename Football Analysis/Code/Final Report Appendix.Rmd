@@ -1,0 +1,60 @@
+---
+title: "EXST 7004 Final Report: Appendix"
+author: "Dina Dinh"
+date: "2022-12-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Table 1:
+```{r} 
+ControlVariable1=c("1","1","2","2","1","1","2","2","1","1","2","2")
+ControlVariable2=c("1","2","1","2","1","2","1","2","1","2","1","2")
+Outcome=c(124,136,157,96,93,103,146,128,111,106,149,132)
+
+df<- data.frame(ControlVariable1, ControlVariable2, Outcome)
+
+write.table(df, file='C:\\Users\\ddinh\\OneDrive\\Documents\\EXST 7004\\data.txt')
+df
+```
+
+## Figure 1:
+Showing output variable is from normal distribution
+```{r}
+qqnorm(Outcome, pch = 1, frame = FALSE)
+qqline(Outcome, col = "steelblue", lwd = 2)
+```
+
+## Code 1:
+```{r}
+t_obs <-(mean(Outcome) - 1)/(sqrt((sd(Outcome)^2)/length(Outcome)))
+p_value<-2*pt(t_obs,df=(length(Outcome)-1),lower.tail=FALSE)
+p_value
+```
+## Code 2:
+```{r}
+model.2.1 <- aov(Outcome ~ControlVariable1 + ControlVariable2)
+summary(model.2.1,type=T)
+```
+## Code 3:
+```{r}
+model.2.2 <- aov(Outcome~ControlVariable1 + ControlVariable2 + ControlVariable1*ControlVariable2)
+summary(model.2.2)
+```
+## Code 4:
+```{r}
+TukeyHSD(model.2.1)
+```
+## Code 5:
+```{r}
+par(mfrow=c(2,2))
+plot(model.2.1)
+```
+## Code 6:
+```{r}
+lm.model<-lm (Outcome~ControlVariable1 + ControlVariable2,data = df)
+summary (lm.model)
+```
